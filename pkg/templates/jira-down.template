@@ -1,0 +1,14 @@
+h1. Queries
+
+{{- range . }}
+h2. {{.Name}}
+|| Unchanged || Changed || Delta ||
+| {{.Unchanged.Value}} | {{.Changed.Value}} | {{ diff .Unchanged.Value .Changed.Value}} |
+
+h3. Prometheus Query
+{code:go}
+{{ .Query -}}
+{code}
+
+---
+{{- end }}

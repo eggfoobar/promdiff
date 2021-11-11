@@ -1,0 +1,15 @@
+# Queries
+
+{{- range . }}
+## {{.Name}}
+| Unchanged ({{.Unchanged.Target}}) | Changed ({{.Changed.Target}}) | Delta |
+|--------|-------|-------|
+| {{.Unchanged.Value}} | {{.Changed.Value}} | {{ diff .Unchanged.Value .Changed.Value}} |
+
+### Prometheus Query
+```go
+{{ .Query -}}
+```
+
+---
+{{- end }}

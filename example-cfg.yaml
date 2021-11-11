@@ -1,0 +1,79 @@
+# prometheus instances
+unchanged:
+  name: "my-unchanged server"
+  port: 5050
+  host: # <default is https://localhost>
+  token: >-
+    <jwt bearer token for prometheus instance>
+changed:
+  name: "my changed server"
+  port: 5555
+  host: # <default is https://localhost>
+  token: >-
+    <jwt bearer token for prometheus instance>
+
+# example queries
+queries:
+  - name: 95th Quantile Over Time (CPU Usage) - Whole Cluster
+    query: |
+      quantile_over_time(
+        .95,
+        sum(
+          rate(
+            container_cpu_usage_seconds_total{namespace!="",container!="POD",name!=""}[5m]
+          )
+        )[6h:]
+      ) * 1000
+
+  - name: Average Over Time (CPU Usage) - Whole Cluster
+    query: |
+      avg_over_time(
+        sum(
+          rate(
+            container_cpu_usage_seconds_total{namespace!="",container!="POD",name!=""}[5m]
+          )
+        )[6h:]
+      ) * 1000
+
+  - name: 95th Quantile Over Time - API Request Total
+    query: |
+      quantile_over_time(.95, sum(rate(apiserver_request_total[5m]))[10m:])
+
+  - name: Average Over Time - API Request Total
+    query: |
+      avg_over_time(sum(rate(apiserver_request_total[5m]))[10m:])
+
+  - name: 95th Quantile Over Time - All Workloads
+    query: |
+      quantile_over_time(
+        .95,
+        sum(
+          rate(
+            container_cpu_usage_seconds_total{namespace!="",container!="POD",name!=""}[5m]
+          )
+        )[6h:]
+      ) * 1000
+  - name: Average Over Time - All Workloads
+    query: |
+      avg_over_time(
+        sum(
+          rate(
+            container_cpu_usage_seconds_total{namespace!="",container!="POD",name!=""}[5m]
+          )
+        )[6h:]
+      ) * 1000
+  - name: 95th Quantile Over Time - Node
+    query: |
+      quantile_over_time(
+        .95, 
+        sum(
+          rate(node_cpu_seconds_total{mode!="iowait", mode!="idle"}[5m])
+        )[6h:]
+      )
+  - name: Average Over Time - Node
+    query: |
+      avg_over_time(
+        sum(
+          rate(node_cpu_seconds_total{mode!="iowait", mode!="idle"}[5m])
+        )[6h:]
+      )

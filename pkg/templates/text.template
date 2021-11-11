@@ -1,0 +1,16 @@
+Queries
+
+{{- range . }}
+{{.Name}}
+
+Unchanged [{{.Unchanged.Target}}]({{.Unchanged.Value}}) 
+Changed   [{{.Changed.Target}}]({{.Changed.Value}})
+Delta     ({{ diff .Unchanged.Value .Changed.Value}})
+
+Prometheus Query
+----
+{{ .Query -}}
+----
+
+######
+{{- end }}
